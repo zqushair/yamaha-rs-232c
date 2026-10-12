@@ -148,6 +148,8 @@ examples/                    ser2net, daemon config + systemd unit templates
 
 Credit where credit is due: **all source code, documentation, and reverse-engineering analysis in this repository were written by AI**. The project was built with AI coding agents running in [OpenCode](https://opencode.ai) — the agent(s) authored every Python file, performed the disassembly/analysis of Yamaha's dealer application, drafted these docs, and ran the tooling.
 
+The reverse engineering was done with [REA — Reverse Engineer Anything](https://github.com/morluto/rea), an MCP toolkit that connects AI agents to native binary analysis (disassembly, decompilation, string/symbol inspection). REA's evidence-driven workflow is what made the findings in `docs/` reproducible frame-by-frame.
+
 The human role was direction and reality-checking: defining goals, prompting and steering each iteration, wiring the hardware, and verifying against a real RX-V2500 (front-panel volume readings that settled the `0x27` offset calibration, confirming commands actually did what the frames said they did).
 
 Consider this repo both a working home-automation bridge and an artifact of how far fully AI-assisted development has come.

@@ -2,7 +2,7 @@
 
 This document wraps up the current reverse-engineering findings for `YamahaReceiverEditor3.exe`. It does **not** include any additional analysis beyond what was already observed.
 
-*Authorship note: this analysis was produced by AI coding agents (see Credits in the README), guided and hardware-verified by a human.*
+*Authorship note: this analysis was produced by AI coding agents using [REA — Reverse Engineer Anything](https://github.com/morluto/rea) for binary inspection (see Credits in the README), guided and hardware-verified by a human.*
 
 ## Target
 
