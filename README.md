@@ -4,6 +4,8 @@ Control a Yamaha **RX-V2500** AV receiver over its rear-panel RS-232C port from 
 
 The RX-V2500 predates network control (no IP / YNCA), so this project speaks the receiver's native serial protocol directly. The frames were recovered by reverse-engineering Yamaha's dealer application — full findings in [`docs/YamahaReceiverEditor3_RE_Findings.md`](docs/YamahaReceiverEditor3_RE_Findings.md).
 
+> **Disclaimer:** This project is not affiliated with, endorsed by, or sponsored by Yamaha Corporation. "Yamaha" and model names are trademarks of their respective owners, used here only to describe compatibility. The RS-232C protocol was reverse-engineered for interoperability purposes; no Yamaha proprietary code, firmware, or binaries are distributed in this repository. Everything is provided **as-is with no warranty** — see [License](#license).
+
 ## Features
 
 - Power, volume (absolute dB sets and up/down), mute, input select, sound programs, extended surround, sleep timer, night mode, speaker B, Zone 2
@@ -141,3 +143,9 @@ examples/                    ser2net, daemon config + systemd unit templates
 - There is deliberately **no volume probe** on startup: `vol_down` is a no-op on this receiver, so old "net-zero" probes leaked +0.5 dB per restart. Volume state is restored from the persisted file and refreshed by user-generated reports.
 - Absolute volume sets (`230`) are applied silently — the receiver echoes but never reports them; the daemon updates its own state optimistically.
 - If the link dies (Pi reboot, USB hiccup), publish to `rxv2500/cmd/reseed` or restart the daemon to force a fresh connection dump.
+
+## License
+
+Distributed under the **Apache License 2.0** — see [LICENSE](LICENSE). Apache-2.0 was chosen deliberately: it grants users copyright and patent rights while explicitly granting **no trademark rights**, and its warranty disclaimer means nobody can hold you liable if they brick a receiver following these notes.
+
+A note on provenance: all source in this repository was written independently for this project. The command frames and report formats were derived by analyzing the behavior of a third-party Windows dealer application (not redistributed here) together with hands-on testing against real hardware; the analysis under `docs/` is published purely as interoperability research.
