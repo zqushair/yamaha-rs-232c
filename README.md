@@ -144,6 +144,14 @@ examples/                    ser2net, daemon config + systemd unit templates
 - Absolute volume sets (`230`) are applied silently — the receiver echoes but never reports them; the daemon updates its own state optimistically.
 - If the link dies (Pi reboot, USB hiccup), publish to `rxv2500/cmd/reseed` or restart the daemon to force a fresh connection dump.
 
+## Credits
+
+Credit where credit is due: **all source code, documentation, and reverse-engineering analysis in this repository were written by AI**. The project was built with AI coding agents running in [OpenCode](https://opencode.ai) — the agent(s) authored every Python file, performed the disassembly/analysis of Yamaha's dealer application, drafted these docs, and ran the tooling.
+
+The human role was direction and reality-checking: defining goals, prompting and steering each iteration, wiring the hardware, and verifying against a real RX-V2500 (front-panel volume readings that settled the `0x27` offset calibration, confirming commands actually did what the frames said they did).
+
+Consider this repo both a working home-automation bridge and an artifact of how far fully AI-assisted development has come.
+
 ## License
 
 Distributed under the **Apache License 2.0** — see [LICENSE](LICENSE).
