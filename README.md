@@ -117,6 +117,20 @@ mosquitto_pub -t rxv2500/set/volume_db -m '-35.5'
 
 [`yamaha_mqtt_bridge.py`](yamaha_mqtt_bridge.py) is a minimal poll-free bridge kept as a starting point; `rxv2500d.py` supersedes it. Configure broker/credentials via the constants at the top or matching environment variables (`MQTT_BROKER`, `MQTT_USER`, `MQTT_PASS`, …).
 
+### Show receiver state on a GeekMagic display
+
+[`geekmagic_display.py`](geekmagic_display.py) subscribes to the `rxv2500/` MQTT topics, renders a dense 240×240 dashboard (clock, input, volume hero + bar, DSP mode, status chips) with Pillow, and pushes it to a GeekMagic SmallTV Pro/Ultra over the stock firmware's HTTP API — no Home Assistant or firmware flashing required.
+
+```bash
+pip3 install Pillow
+python3 geekmagic_display.py --probe --config examples/geekmagic_display.conf
+python3 geekmagic_display.py --backup-album --config examples/geekmagic_display.conf
+python3 geekmagic_display.py --test-card --config examples/geekmagic_display.conf
+python3 geekmagic_display.py --config examples/geekmagic_display.conf
+```
+
+Set `DISPLAY_HOST` to the display's IP. The daemon auto-detects the firmware profile (Pro / Ultra / SD_PRO) and uploads the dashboard to the Pro's picture album. The stock firmware never redraws an image that is replaced in place, and re-asserting the theme while already in it is a no-op — so in single-page mode (`PAGES=1`, the default) the daemon configures the one-image album as a slideshow (`REFRESH_INTERVAL`, default 1s) that re-reads the file each tick, making live state changes appear on screen within a couple of seconds. Multi-page mode (`PAGES=2,3,4`) restores the original Sound Field / Status / Clock cards with the **touch button cycling them natively** (short press = next page; page dots at the bottom of every card), at the cost of live updates. `--backup-album` saves the existing album to `BACKUP_DIR` and pins it to the page images. `STANDBY_MODE=clock` (default) shows the clock app when the receiver is off; use `card` to always show the receiver card. Button handling is controlled by `BUTTON_MODE` (`native`/`poll`/`off`). See [`examples/geekmagic_display.conf`](examples/geekmagic_display.conf) and [`examples/geekmagic_display.service`](examples/geekmagic_display.service).
+
 ## Protocol cheat-sheet
 
 - Frame: `STX (0x02) + ASCII payload + ETX (0x03)`
@@ -134,6 +148,7 @@ See [`docs/YamahaReceiverEditor3_RE_Findings.md`](docs/YamahaReceiverEditor3_RE_
 yamaha_rs232_controller.py   core protocol library + CLI (frames, commands, report parser)
 rxv2500d.py                  resident RS-232 → MQTT daemon with HA discovery (recommended)
 yamaha_mqtt_bridge.py        minimal legacy MQTT bridge
+geekmagic_display.py         MQTT → GeekMagic SmallTV display daemon (Pillow-rendered dashboard)
 docs/…_RE_Findings.md        reverse-engineering notes for the protocol
 examples/                    ser2net, daemon config + systemd unit templates
 ```

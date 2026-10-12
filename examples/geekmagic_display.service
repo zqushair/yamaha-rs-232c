@@ -1,0 +1,23 @@
+# systemd unit for the geekmagic_display daemon.
+#
+#   sudo cp examples/geekmagic_display.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now geekmagic_display
+
+[Unit]
+Description=Push Yamaha RX-V2500 state to a GeekMagic SmallTV display
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+# Create the runtime user once:
+#   sudo useradd --system --home /var/lib/geekmagic_display --shell /usr/sbin/nologin geekmagic_display
+User=geekmagic_display
+WorkingDirectory=/opt/geekmagic_display
+ExecStart=/usr/bin/python3 /opt/geekmagic_display/geekmagic_display.py --config /etc/geekmagic_display.conf
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
