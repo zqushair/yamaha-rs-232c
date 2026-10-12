@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Third-party Windows tool (not redistributable, used only as a reference)
+*.exe
+
+# Runtime state / local config
+rxv2500d_state.json
+*.local.conf
+.env

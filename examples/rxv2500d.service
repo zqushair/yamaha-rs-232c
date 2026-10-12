@@ -1,0 +1,28 @@
+# systemd unit for the rxv2500d daemon.
+#
+#   sudo cp examples/rxv2500d.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now rxv2500d
+
+[Unit]
+Description=Yamaha RX-V2500 RS-232C to MQTT bridge daemon
+After=network-online.target ser2net.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+# Create the runtime user/state dir once:
+#   sudo useradd --system --home /var/lib/rxv2500d --shell /usr/sbin/nologin rxv2500d
+#   sudo mkdir -p /var/lib/rxv2500d && sudo chown rxv2500d: /var/lib/rxv2500d
+User=rxv2500d
+WorkingDirectory=/opt/rxv2500d
+ExecStart=/usr/bin/python3 /opt/rxv2500d/rxv2500d.py --config /etc/rxv2500d.conf
+Restart=on-failure
+RestartSec=5
+
+# Optional: allow the daemon to restart ser2net itself on "reseed"
+# (set RESEED_RESTART_SER2NET=true in the config). Add a sudoers drop-in like:
+#   rxv2500d ALL=(ALL) NOPASSWD: /usr/bin/systemctl restart ser2net
+
+[Install]
+WantedBy=multi-user.target

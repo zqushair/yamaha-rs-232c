@@ -1,0 +1,23 @@
+# ser2net example — expose the RX-V2500's RS-232C link as a TCP socket
+# on localhost:2500, which rxv2500d.py / yamaha_rs232_controller.py connect to.
+#
+# ser2net 4.x (YAML) — file: /etc/ser2net/ser2net.yaml
+#   sudo apt install ser2net
+#   sudo systemctl restart ser2net
+
+%YAML 1.1
+---
+connection: &yamaha-rxv2500
+  accepter: tcp,127.0.0.1,2500
+  # "local" ignores modem control lines (works for the RX-V2500 in practice).
+  # If you ever see dropped bytes, try hardware handshake instead:
+  #   connector: serialdev,/dev/ttyUSB0,9600n81,rtscts
+  connector: serialdev,/dev/ttyUSB0,9600n81,local
+  options:
+    timeout: 0            # never idle-disconnect (the daemon owns the link)
+
+# ---------------------------------------------------------------------------
+# ser2net 3.x (legacy format) — file: /etc/ser2net.conf
+#
+#   2500:raw:0:/dev/ttyUSB0:9600 8DATABITS NONE 1STOPBIT LOCAL
+# ---------------------------------------------------------------------------
