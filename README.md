@@ -146,6 +146,4 @@ examples/                    ser2net, daemon config + systemd unit templates
 
 ## License
 
-Distributed under the **Apache License 2.0** — see [LICENSE](LICENSE). Apache-2.0 was chosen deliberately: it grants users copyright and patent rights while explicitly granting **no trademark rights**, and its warranty disclaimer means nobody can hold you liable if they brick a receiver following these notes.
-
-A note on provenance: all source in this repository was written independently for this project. The command frames and report formats were derived by analyzing the behavior of a third-party Windows dealer application (not redistributed here) together with hands-on testing against real hardware; the analysis under `docs/` is published purely as interoperability research.
+Distributed under the **Apache License 2.0** — see [LICENSE](LICENSE).
